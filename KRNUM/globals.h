@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <math.h>
 #pragma once
 
 namespace globals
@@ -6,8 +7,9 @@ namespace globals
 	inline std::uint32_t process_id = 0;
 
 	inline bool cEspBoxes = false;
-	inline bool cEspBoxesFixedSize = false;
 	inline bool cEspBoxesNearestVehicle = false;
+
+	inline float EspColor[] = { 1.f, 0.f, 0.f };
 }
 
 namespace offsets
