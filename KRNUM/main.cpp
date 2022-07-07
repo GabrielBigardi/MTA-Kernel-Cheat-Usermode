@@ -1,4 +1,3 @@
-
 #include <Windows.h>
 #include <iostream>
 #include <TlHelp32.h>
@@ -13,6 +12,8 @@
 #include "math.h"
 #include "memory.h"
 #include "draw.h"
+
+#define concat(first, second) first second
 
 uintptr_t base_address = 0;
 
@@ -68,32 +69,31 @@ static ULONG64 get_module_base_address(const char* module_name)
 
 int main()
 {
-	printf("Starting");
-	printf("\n\nTrying to locate proccess...");
+	std::cout << "Trying to locate process..." << std::endl;
 	globals::process_id = get_process_id("gta_sa.exe");
 
 	if (globals::process_id == 0) {
-		printf("\nERROR: Process not found!");
+		std::cout << RED << "\nERROR: Process not found!" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
 
-	printf("\nTrying to locate base module...");
+	std::cout << "Trying to locate base module..." << std::endl;
 	base_address = get_module_base_address("gta_sa.exe");
 
 	if (!base_address) {
-		printf("\nERROR: Base module not found!");
+		std::cout << RED << "\nERROR: Base module not found!" << std::endl;
+		printf("");
 		Sleep(5000);
 		return NULL;
 	}
 
-	printf("\n\nStarting in 3s...\n");
+	std::cout << "Starting in 3s...\n\n" << std::endl;
 	Sleep(3000);
 
 	bool F2 = false;
 	bool F3 = false;
 	bool F4 = false;
-
 
 	while (true)
 	{
@@ -102,7 +102,7 @@ int main()
 		{
 			globals::cEspBoxes = !globals::cEspBoxes;
 			if (globals::cEspBoxesFixedSize) globals::cEspBoxesFixedSize = false;
-			globals::cEspBoxes ? printf("\nDYNAMIC ESP LIGADO.") : printf("\nDYNAMIC ESP DESLIGADO.");
+			globals::cEspBoxes ? std::cout << "Dynamic ESP Boxes: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "ESP Boxes: " << RED << "[OFF]" << RESET << std::endl;
 			F2 = true;
 		}
 		if (GetAsyncKeyState(VK_F2) == 0 && F2 == true) F2 = false;
@@ -112,7 +112,7 @@ int main()
 		{
 			globals::cEspBoxesFixedSize = !globals::cEspBoxesFixedSize;
 			if (globals::cEspBoxes) globals::cEspBoxes = false;
-			globals::cEspBoxesFixedSize ? printf("\nFIXED ESP LIGADO.") : printf("\nFIXED ESP DESLIGADO.");
+			globals::cEspBoxesFixedSize ? std::cout << "Fixed ESP Boxes: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "ESP Boxes: " << RED << "[OFF]" << RESET << std::endl;
 			F3 = true;
 		}
 		if (GetAsyncKeyState(VK_F3) == 0 && F3 == true) F3 = false;
@@ -121,7 +121,7 @@ int main()
 		if (GetAsyncKeyState(VK_F4) < 0 && F4 == false)
 		{
 			globals::cEspBoxesNearestVehicle = !globals::cEspBoxesNearestVehicle;
-			globals::cEspBoxesNearestVehicle ? printf("\nVEHICLE ESP LIGADO.") : printf("\nVEHICLE ESP DESLIGADO.");
+			globals::cEspBoxesNearestVehicle ? std::cout << "Vehicle ESP: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "Vehicle ESP: " << RED << "[OFF]" << RESET << std::endl;
 			F4 = true;
 		}
 		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
