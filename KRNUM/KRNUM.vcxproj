@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="definitions.h" />
+    <ClInclude Include="draw.h" />
     <ClInclude Include="globals.h" />
     <ClInclude Include="gtautils.h" />
     <ClInclude Include="hook.h" />

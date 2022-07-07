@@ -12,6 +12,7 @@
 #include "hook.h"
 #include "math.h"
 #include "memory.h"
+#include "draw.h"
 
 uintptr_t base_address = 0;
 
@@ -63,30 +64,6 @@ static ULONG64 get_module_base_address(const char* module_name)
 	ULONG64 base = NULL;
 	base = instructions.base_address;
 	return base;
-}
-
-bool draw_box(int x, int y, int w, int h, int t, int r, int g, int b)
-{
-	NULL_MEMORY instructions;
-	instructions.write = FALSE;
-	instructions.read = FALSE;
-	instructions.req_base = FALSE;
-	instructions.draw_box = TRUE;
-
-	instructions.x = x;
-	instructions.y = y;
-	instructions.w = w;
-	instructions.h = h;
-	instructions.t = t;
-
-	instructions.r = r;
-	instructions.g = g;
-	instructions.b = b;
-
-
-	call_hook(&instructions);
-
-	return true;
 }
 
 int main()
@@ -196,7 +173,7 @@ int main()
 								width = min_width;
 							}
 
-							draw_box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
+							draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
 						}
 					}
 				}
@@ -237,7 +214,7 @@ int main()
 							float height = 4.0f;
 							float width = 4.0f;
 
-							draw_box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
+							draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
 						}
 					}
 				}
@@ -267,7 +244,7 @@ int main()
 						float height = 4.0f;
 						float width = 4.0f;
 
-						draw_box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 0, 255, 0);
+						draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 0, 255, 0);
 					}
 				}
 				printf("\nModel: %i", NearestVehicleModelID);
