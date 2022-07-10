@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClCompile Include="gtautils.cpp" />
     <ClCompile Include="gui.cpp" />
-    <ClCompile Include="hacks.cpp" />
     <ClCompile Include="hook.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -153,7 +152,6 @@
     <ClInclude Include="globals.h" />
     <ClInclude Include="gtautils.h" />
     <ClInclude Include="gui.h" />
-    <ClInclude Include="hacks.h" />
     <ClInclude Include="hook.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
