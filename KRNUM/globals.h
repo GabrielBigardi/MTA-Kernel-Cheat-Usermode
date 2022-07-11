@@ -7,7 +7,7 @@ namespace globals
 
 	inline bool cEspBoxes = false;
 	inline bool cEspBoxesFixedSize = false;
-	inline bool cEspBoxesNearestVehicle = false;
+	inline bool cTestFunction = false;
 }
 
 namespace offsets

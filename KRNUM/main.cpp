@@ -13,8 +13,6 @@
 #include "memory.h"
 #include "draw.h"
 
-#define concat(first, second) first second
-
 uintptr_t base_address = 0;
 
 struct HandleDisposer
@@ -120,8 +118,8 @@ int main()
 		// ==== Fixed Size ESP ====
 		if (GetAsyncKeyState(VK_F4) < 0 && F4 == false)
 		{
-			globals::cEspBoxesNearestVehicle = !globals::cEspBoxesNearestVehicle;
-			globals::cEspBoxesNearestVehicle ? std::cout << "Vehicle ESP: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "Vehicle ESP: " << RED << "[OFF]" << RESET << std::endl;
+			globals::cTestFunction = !globals::cTestFunction;
+			globals::cTestFunction ? std::cout << "Vehicle ESP: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "Vehicle ESP: " << RED << "[OFF]" << RESET << std::endl;
 			F4 = true;
 		}
 		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
@@ -221,35 +219,18 @@ int main()
 			}
 		}
 
-		if (globals::cEspBoxesNearestVehicle)
+		if (globals::cTestFunction)
 		{
 			DWORD_PTR LocalPlayer = Read<DWORD_PTR>(offsets::dwPlayerPointer);
-			DWORD_PTR AnimStruct = Read<DWORD_PTR>(LocalPlayer + 0x47C);
-			DWORD NearestVehiclePointer = (DWORD)(AnimStruct + 0x120);
-			DWORD_PTR NearestVehicle = Read<DWORD_PTR>(NearestVehiclePointer);
-			DWORD NearestVehiclePosRotPointer = (DWORD)(NearestVehicle + 0x14);
-			DWORD NearestVehicleModelIDPointer = (DWORD)(NearestVehicle + 0x22);
-			WORD NearestVehicleModelID = Read<WORD>(NearestVehicleModelIDPointer);
-			DWORD_PTR NearestVehiclePosRot = Read<DWORD_PTR>(NearestVehiclePosRotPointer);
-			DWORD NearestVehiclePosPointer = (DWORD)(NearestVehiclePosRot + 0x30);
-			Vector3 NearestVehiclePos = Read<Vector3>(NearestVehiclePosPointer);
+			int TargetedCPed = Read<int>(LocalPlayer + 0x79C);
 
-			if (IsPositionValid(NearestVehiclePos) && IsVehicleIdValid(NearestVehicleModelID))
+			printf("\nTargetedCPed: %i", TargetedCPed);
+
+			if (TargetedCPed != 0)
 			{
-				if (NearestVehiclePos.x != 0.0f && NearestVehiclePos.y != 0.0f)
-				{
-					Vector2 screen;
-					if (WorldToScreen(NearestVehiclePos, screen))
-					{
-						float height = 4.0f;
-						float width = 4.0f;
-
-						draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 0, 255, 0);
-					}
-				}
-				printf("\nModel: %i", NearestVehicleModelID);
+				Write<int>(0x5FBD020C, 32768);
+				printf("\nSHOT");
 			}
-
 		}
 	}
 }
