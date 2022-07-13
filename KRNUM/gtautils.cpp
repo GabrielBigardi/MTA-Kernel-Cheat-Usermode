@@ -1,8 +1,8 @@
 #include "math.h"
 
-bool IsPositionValid(Vector3 position)
+bool IsPositionValid(CVector position)
 {
-	return position.x > -3000.0f && position.x < 3000.0f && position.x != 0.0f && position.y > -3000.0f && position.y < 3000.0f && position.y != 0.0f;
+	return position.fX > -3000.0f && position.fX < 3000.0f && position.fX != 0.0f && position.fY > -3000.0f && position.fY < 3000.0f && position.fY != 0.0f;
 }
 
 bool IsVehicleIdValid(int vehicleId)

@@ -1,6 +1,7 @@
 #pragma once
 #include "definitions.h"
+#include "CVector.h"
 
-void CalcScreenCoords(Vector3*, Vector3*);
-bool WorldToScreen(Vector3, Vector2&);
-float Get3DDistance(Vector3*, Vector3*);
+void CalcScreenCoords(CVector*, CVector*);
+bool WorldToScreen(CVector, Vector2&);
+float Get3DDistance(CVector*, CVector*);

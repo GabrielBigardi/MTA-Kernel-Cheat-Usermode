@@ -105,24 +105,6 @@ int main()
 		}
 		if (GetAsyncKeyState(VK_F2) == 0 && F2 == true) F2 = false;
 
-		// ==== Fixed Size ESP ====
-		if (GetAsyncKeyState(VK_F3) < 0 && F3 == false)
-		{
-			globals::cEspBoxesFixedSize = !globals::cEspBoxesFixedSize;
-			if (globals::cEspBoxes) globals::cEspBoxes = false;
-			globals::cEspBoxesFixedSize ? std::cout << "Fixed ESP Boxes: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "ESP Boxes: " << RED << "[OFF]" << RESET << std::endl;
-			F3 = true;
-		}
-		if (GetAsyncKeyState(VK_F3) == 0 && F3 == true) F3 = false;
-
-		// ==== Fixed Size ESP ====
-		if (GetAsyncKeyState(VK_F4) < 0 && F4 == false)
-		{
-			globals::cTestFunction = !globals::cTestFunction;
-			globals::cTestFunction ? std::cout << "Vehicle ESP: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "Vehicle ESP: " << RED << "[OFF]" << RESET << std::endl;
-			F4 = true;
-		}
-		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
 
 		if (globals::cEspBoxes)
 		{
@@ -131,7 +113,7 @@ int main()
 
 			DWORD_PTR pPosStructAddress = (DWORD)LocalPlayer + 0x14;
 			DWORD pPosStruct = Read<DWORD>(pPosStructAddress);
-			Vector3 pPlayerPos = Read<Vector3>(pPosStruct + 0x30);
+			CVector pPlayerPos = Read<CVector>(pPosStruct + 0x30);
 
 			for (int i = 0; i < 140; i++)
 			{
@@ -142,94 +124,30 @@ int main()
 				{
 					DWORD_PTR PosStructAddress = (DWORD)CurrentPed + 0x14;
 					DWORD PosStruct = Read<DWORD>(PosStructAddress);
-					Vector3 PlayerPos = Read<Vector3>(PosStruct + 0x30);
+					CVector PlayerPos = Read<CVector>(PosStruct + 0x30);
 
-					if (PlayerPos.x != 0.0f && PlayerPos.y != 0.0f)
+					if (PlayerPos.fX != 0.0f && PlayerPos.fX != 0.0f)
 					{
+						Vector2 FeetSP;
+						Vector2 HeadSP;
+
+						CVector PlayerFeetPos = PlayerPos - CVector(0.f, 0.f, 1.f);
+						CVector PlayerHeadPos = PlayerPos + CVector(0.f, 0.f, 0.775f);
+
 						Vector2 screen;
-						if (WorldToScreen(PlayerPos, screen))
+
+						if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
 						{
-							float height = 80.0f;
-							float width = 40.0f;
-							float distance_factor = 10.0f;
+							float BoxSY = FeetSP.y - HeadSP.y;
+							float BoxSX = BoxSY / 2.25f;
+							float BoxX = HeadSP.x - BoxSX / 2;
+							float BoxY = HeadSP.y;
 
-							float max_height = 80.0f;
-							float max_width = 40.0f;
-							float min_height = 5.0f;
-							float min_width = 5.0f;
-
-							height = height / Get3DDistance(&pPlayerPos, &PlayerPos) * distance_factor;
-							width = width / Get3DDistance(&pPlayerPos, &PlayerPos) * distance_factor;
-
-							if (height >= max_height) {
-								height = max_height;
-								width = max_width;
-							}
-
-							if (width <= min_width) {
-								height = min_height;
-								width = min_width;
-							}
-
-							draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
+							draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
+							draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
 						}
 					}
 				}
-			}
-		}
-
-		if (globals::cEspBoxesFixedSize)
-		{
-			DWORD_PTR LocalPlayer = Read<DWORD_PTR>(offsets::dwPlayerPointer);
-			DWORD_PTR EntityList = Read<DWORD_PTR>(offsets::dwEntityList);
-
-			//LOCALPLAYER
-			DWORD_PTR pPosStructAddress = (DWORD)LocalPlayer + 0x14;
-			DWORD pPosStruct = Read<DWORD>(pPosStructAddress);
-			Vector3 pPlayerPos = Read<Vector3>(pPosStruct + 0x30);
-
-			for (int i = 0; i < 140; i++)
-			{
-				DWORD_PTR CurrentPed = (DWORD)EntityList + (offsets::dwCPedSize * i);
-				float CurrentPedHealth = Read<float>(CurrentPed + offsets::m_CurrentHealth);
-				float MaxPedHealth = Read<float>(CurrentPed + offsets::m_MaxHealth);
-
-				if (CurrentPedHealth >= 1.0f && CurrentPed != LocalPlayer)
-				{
-					// default max health: 100.143997
-					printf("\nMax Health: %f", MaxPedHealth);
-
-					//PED
-					DWORD_PTR PosStructAddress = (DWORD)CurrentPed + 0x14;
-					DWORD PosStruct = Read<DWORD>(PosStructAddress);
-					Vector3 PlayerPos = Read<Vector3>(PosStruct + 0x30);
-
-					if (PlayerPos.x != 0.0f && PlayerPos.y != 0.0f)
-					{
-						Vector2 screen;
-						if (WorldToScreen(PlayerPos, screen))
-						{
-							float height = 4.0f;
-							float width = 4.0f;
-
-							draw::box(screen.x - (width / 2.0f), screen.y - (height / 2.0f), width, height, 2, 255, 0, 0);
-						}
-					}
-				}
-			}
-		}
-
-		if (globals::cTestFunction)
-		{
-			DWORD_PTR LocalPlayer = Read<DWORD_PTR>(offsets::dwPlayerPointer);
-			int TargetedCPed = Read<int>(LocalPlayer + 0x79C);
-
-			printf("\nTargetedCPed: %i", TargetedCPed);
-
-			if (TargetedCPed != 0)
-			{
-				Write<int>(0x5FBD020C, 32768);
-				printf("\nSHOT");
 			}
 		}
 	}
