@@ -65,6 +65,8 @@ static ULONG64 get_module_base_address(const char* module_name)
 	return base;
 }
 
+HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 int main()
 {
 	std::cout << "Trying to locate process..." << std::endl;
@@ -99,11 +101,42 @@ int main()
 		if (GetAsyncKeyState(VK_F2) < 0 && F2 == false)
 		{
 			globals::cEspBoxes = !globals::cEspBoxes;
-			if (globals::cEspBoxesFixedSize) globals::cEspBoxesFixedSize = false;
-			globals::cEspBoxes ? std::cout << "Dynamic ESP Boxes: " << GREEN << "[ON]" << RESET << std::endl : std::cout << "ESP Boxes: " << RED << "[OFF]" << RESET << std::endl;
+			//const char* cEspState = globals::cEspBoxes ? "[ON]" : "[OFF]"
+
+			std::cout << "Player/Zombies ESP: ";
+			if (globals::cEspBoxes) {
+				SetConsoleTextAttribute(hConsole, 2);
+				std::cout << "[ON]" << std::endl;
+			}
+			else {
+				SetConsoleTextAttribute(hConsole, 4);
+				std::cout << "[OFF]" << std::endl;
+			}
+			SetConsoleTextAttribute(hConsole, 7);
+
 			F2 = true;
 		}
 		if (GetAsyncKeyState(VK_F2) == 0 && F2 == true) F2 = false;
+
+		// ==== Vehicle ESP ====
+		if (GetAsyncKeyState(VK_F4) < 0 && F4 == false)
+		{
+			globals::cEspVehicles = !globals::cEspVehicles;
+
+			std::cout << "Vehicle ESP: ";
+			if (globals::cEspVehicles) {
+				SetConsoleTextAttribute(hConsole, 2);
+				std::cout << "[ON]" << std::endl;
+			}
+			else {
+				SetConsoleTextAttribute(hConsole, 4);
+				std::cout << "[OFF]" << std::endl;
+			}
+			SetConsoleTextAttribute(hConsole, 7);
+
+			F4 = true;
+		}
+		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
 
 
 		if (globals::cEspBoxes)
@@ -125,6 +158,8 @@ int main()
 					DWORD_PTR PosStructAddress = (DWORD)CurrentPed + 0x14;
 					DWORD PosStruct = Read<DWORD>(PosStructAddress);
 					CVector PlayerPos = Read<CVector>(PosStruct + 0x30);
+					byte PlayerCheckByte = Read<byte>(CurrentPed + 0x530);
+					int PlayerStatus = (int)PlayerCheckByte;
 
 					if (PlayerPos.fX != 0.0f && PlayerPos.fX != 0.0f)
 					{
@@ -143,9 +178,82 @@ int main()
 							float BoxX = HeadSP.x - BoxSX / 2;
 							float BoxY = HeadSP.y;
 
-							draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
-							draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
+							if (PlayerStatus == 50) // 0 = leaving a car, falling down from a bike or something like this 1 = normal case 50 = driving 55 = wasted 63 = busted
+							{
+								draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 175, 0, 0);
+								draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
+							}
+							else
+							{
+								draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
+								draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
+							}
+							
 						}
+					}
+				}
+			}
+			//globals::cEspBoxes = false;
+		}
+
+		if (globals::cEspObjects)
+		{
+			DWORD_PTR ObjectPool = Read<DWORD_PTR>(0xB7449C);
+			DWORD_PTR ObjectPoolStart = Read<DWORD_PTR>((DWORD)ObjectPool);
+			int ObjectPoolSize = Read<int>((DWORD)ObjectPool + 0x8);
+
+			for (int i = 0; i < ObjectPoolSize; i++)
+			{
+				DWORD_PTR CurrentObject = (DWORD)ObjectPoolStart + (0x19c * i);
+				CVector CurrentObjectPos = Read<CVector>((DWORD)CurrentObject + 0x4);
+				int CurrentObjectModel = Read<int>((DWORD)CurrentObject + 0x22);
+
+				if (CurrentObjectPos.fX != 0.0f && CurrentObjectPos.fY != 0.0f)// && CurrentObjectModel == 3243)
+				{
+					Vector2 FeetSP;
+					Vector2 HeadSP;
+
+					CVector PlayerFeetPos = CurrentObjectPos - CVector(0.f, 0.f, 1.f);
+					CVector PlayerHeadPos = CurrentObjectPos + CVector(0.f, 0.f, 0.775f);
+
+					Vector2 screen;
+
+					if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
+					{
+						float BoxSY = FeetSP.y - HeadSP.y;
+						float BoxSX = BoxSY / 2.25f;
+						float BoxX = HeadSP.x - BoxSX / 2;
+						float BoxY = HeadSP.y;
+
+						draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
+						draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 0, 255, 0);
+					}
+				}
+			}
+		}
+
+
+		if (globals::cEspVehicles)
+		{
+			DWORD_PTR VehiclePoolUsage = Read<DWORD_PTR>(0xB74494);
+			DWORD_PTR VehiclePoolStart = Read<DWORD_PTR>((DWORD)VehiclePoolUsage);
+			int MaximumVehicle = Read<int>((DWORD)VehiclePoolUsage + 0x8);
+
+			for (int i = 0; i < MaximumVehicle; i++)
+			{
+				DWORD_PTR CurrentVehicle = (DWORD)VehiclePoolStart + (0xA18 * i);
+				DWORD_PTR CurrentVehiclePosPointer = Read<DWORD_PTR>((DWORD)CurrentVehicle + 0x14);
+				CVector CurrentVehiclePos = Read<CVector>((DWORD)CurrentVehiclePosPointer + 0x30);
+			
+				if (CurrentVehiclePos.fX != 0.0f && CurrentVehiclePos.fY != 0.0f)// && CurrentObjectModel == 3243)
+				{
+					Vector2 screen;
+					int size = 4;
+				
+					if (WorldToScreen(CurrentVehiclePos, screen))
+					{
+						draw::box(screen.x - size / 2 - 1, screen.y - 1, size + 2, size + 2, 3, 0, 0, 0);
+						draw::box(screen.x - size / 2, screen.y, size, size, 1, 0, 255, 0);
 					}
 				}
 			}

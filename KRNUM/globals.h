@@ -5,9 +5,9 @@ namespace globals
 {
 	inline std::uint32_t process_id = 0;
 
-	inline bool cEspBoxes = false;
-	inline bool cEspBoxesFixedSize = false;
-	inline bool cTestFunction = false;
+	inline bool cEspBoxes = true;
+	inline bool cEspObjects = false;
+	inline bool cEspVehicles = false;
 }
 
 namespace offsets
