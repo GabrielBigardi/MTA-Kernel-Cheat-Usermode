@@ -138,7 +138,6 @@
     <ClCompile Include="memory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ansi.h" />
     <ClInclude Include="CVector.h" />
     <ClInclude Include="definitions.h" />
     <ClInclude Include="draw.h" />

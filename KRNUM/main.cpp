@@ -69,11 +69,33 @@ HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int main()
 {
+	SetConsoleTextAttribute(hConsole, 6);
+//	std::cout << R"(
+//:::    ::: ::::::::::: :::    :::       :::     :::   :::        :::::::  
+//:+:    :+:     :+:     :+:    :+:       :+:     :+: :+:+:       :+:   :+: 
+//+:+    +:+     +:+      +:+  +:+        +:+     +:+   +:+       +:+  :+:+ 
+//+#++:++#++     +#+       +#++:+         +#+     +:+   +#+       +#+ + +:+ 
+//+#+    +#+     +#+      +#+  +#+         +#+   +#+    +#+       +#+#  +#+ 
+//#+#    #+#     #+#     #+#    #+#         #+#+#+#     #+#   #+# #+#   #+# 
+//###    ###     ###     ###    ###           ###     ####### ###  #######  
+//)" << std::endl;
+	std::cout << R"(
+88      888888888888                          88         ,a8888a,     
+88           88                             ,d88       ,8P"'  `"Y8,   
+88           88                           888888      ,8P        Y8,  
+88,dPPYba,   88  8b,     ,d8     8b       d8  88      88          88  
+88P'    "8a  88   `Y8, ,8P'      `8b     d8'  88      88          88  
+88       88  88     )888(         `8b   d8'   88      `8b        d8'  
+88       88  88   ,d8" "8b,        `8b,d8'    88  888  `8ba,  ,ad8'   
+88       88  88  8P'     `Y8         "8"      88  888    "Y8888P"     
+)" << std::endl;
+	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "Trying to locate process..." << std::endl;
 	globals::process_id = get_process_id("gta_sa.exe");
 
 	if (globals::process_id == 0) {
-		std::cout << RED << "\nERROR: Process not found!" << std::endl;
+		SetConsoleTextAttribute(hConsole, 4);
+		std::cout << "\nERROR: Process not found!" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
@@ -82,13 +104,15 @@ int main()
 	base_address = get_module_base_address("gta_sa.exe");
 
 	if (!base_address) {
-		std::cout << RED << "\nERROR: Base module not found!" << std::endl;
-		printf("");
+		SetConsoleTextAttribute(hConsole, 4);
+		std::cout << "\nERROR: Base module not found!" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
 
+	SetConsoleTextAttribute(hConsole, 2);
 	std::cout << "Starting in 3s...\n\n" << std::endl;
+	SetConsoleTextAttribute(hConsole, 7);
 	Sleep(3000);
 
 	bool F2 = false;
