@@ -4,7 +4,7 @@ bool Write_memory(UINT_PTR write_address, UINT_PTR source_address, SIZE_T write_
 {
 	NULL_MEMORY instructions;
 	instructions.address = write_address;
-	instructions.pid = globals::process_id;
+	instructions.pid = globals::gtasa_process_id;
 	instructions.write = TRUE;
 	instructions.read = FALSE;
 	instructions.req_base = FALSE;

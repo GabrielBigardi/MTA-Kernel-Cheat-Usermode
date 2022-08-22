@@ -13,7 +13,8 @@
 #include "memory.h"
 #include "draw.h"
 
-uintptr_t base_address = 0;
+uintptr_t game_base_address = 0;
+uintptr_t client_module_address = 0;
 
 struct HandleDisposer
 {
@@ -49,10 +50,10 @@ static std::uint32_t get_process_id(std::string_view process_name)
 	return NULL;
 }
 
-static ULONG64 get_module_base_address(const char* module_name)
+static ULONG64 get_module_base_address(uintptr_t pid, const char* module_name)
 {
 	NULL_MEMORY instructions = { 0 };
-	instructions.pid = globals::process_id;
+	instructions.pid = pid;
 	instructions.req_base = TRUE;
 	instructions.read = FALSE;
 	instructions.write = FALSE;
@@ -91,24 +92,42 @@ int main()
 )" << std::endl;
 	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "Trying to locate process..." << std::endl;
-	globals::process_id = get_process_id("gta_sa.exe");
+	globals::gtasa_process_id = get_process_id("gta_sa.exe");
+	//globals::mta_process_id = get_process_id("Multi Theft Auto.exe");
 
-	if (globals::process_id == 0) {
+	if (globals::gtasa_process_id == 0) {
 		SetConsoleTextAttribute(hConsole, 4);
-		std::cout << "\nERROR: Process not found!" << std::endl;
+		std::cout << "\nERROR: gta_sa.exe not found!" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
 
-	std::cout << "Trying to locate base module..." << std::endl;
-	base_address = get_module_base_address("gta_sa.exe");
+	//if (globals::mta_process_id == 0) {
+	//	SetConsoleTextAttribute(hConsole, 4);
+	//	std::cout << "\nERROR: MultiTheftAuto.exe not found!" << std::endl;
+	//	Sleep(5000);
+	//	return NULL;
+	//}
 
-	if (!base_address) {
+	std::cout << "Trying to locate base module..." << std::endl;
+	game_base_address = get_module_base_address(globals::gtasa_process_id, "gta_sa.exe");
+
+	if (!game_base_address) {
 		SetConsoleTextAttribute(hConsole, 4);
 		std::cout << "\nERROR: Base module not found!" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
+
+	//std::cout << "Trying to locate client module..." << std::endl;
+	//client_module_address = get_module_base_address(globals::mta_process_id, "client.dll");
+	//
+	//if (!client_module_address) {
+	//	SetConsoleTextAttribute(hConsole, 4);
+	//	std::cout << "\nERROR: Client module not found!" << std::endl;
+	//	Sleep(5000);
+	//	return NULL;
+	//}
 
 	SetConsoleTextAttribute(hConsole, 2);
 	std::cout << "Starting in 3s...\n\n" << std::endl;
@@ -118,6 +137,9 @@ int main()
 	bool F2 = false;
 	bool F3 = false;
 	bool F4 = false;
+	bool F5 = false;
+	bool F6 = false;
+	bool F7 = false;
 
 	while (true)
 	{
@@ -161,6 +183,39 @@ int main()
 			F4 = true;
 		}
 		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
+
+		// ==== Farclip Distance ====
+		if (GetAsyncKeyState(VK_F5) < 0 && F5 == false)
+		{
+			std::cout << "Farclip: ";
+			SetConsoleTextAttribute(hConsole, 2);
+			std::cout << "[1500f]" << std::endl;
+			SetConsoleTextAttribute(hConsole, 7);
+			Write(0xB7C4F0, 1500.0f);
+			F5 = true;
+		}
+		if (GetAsyncKeyState(VK_F5) == 0 && F5 == true) F5 = false;
+
+		// ==== FOG Distance ====
+		if (GetAsyncKeyState(VK_F6) < 0 && F6 == false)
+		{
+			std::cout << "FOG: ";
+			SetConsoleTextAttribute(hConsole, 2);
+			std::cout << "[500f]" << std::endl;
+			SetConsoleTextAttribute(hConsole, 7);
+			Write(0xB7C4F4, 500.0f);
+			F6 = true;
+		}
+		if (GetAsyncKeyState(VK_F6) == 0 && F6 == true) F6 = false;
+
+		// ==== Test ====
+		if (GetAsyncKeyState(VK_F7) < 0 && F7 == false)
+		{
+			globals::cTest = !globals::cTest;
+
+			F7 = true;
+		}
+		if (GetAsyncKeyState(VK_F7) == 0 && F7 == true) F7 = false;
 
 
 		if (globals::cEspBoxes)
@@ -232,26 +287,32 @@ int main()
 				CVector CurrentObjectPos = Read<CVector>((DWORD)CurrentObject + 0x4);
 				int CurrentObjectModel = Read<int>((DWORD)CurrentObject + 0x22);
 
-				if (CurrentObjectPos.fX != 0.0f && CurrentObjectPos.fY != 0.0f)// && CurrentObjectModel == 3243)
+				if (!IsPositionValid(CurrentObjectPos) || !IsObjectValid(CurrentObjectModel))
+					continue;
+
+				//printf("\n Object %i -> ", i);
+				//printf("%i - ", CurrentObjectModel);
+				//printf("%f - ", CurrentObjectPos.fX);
+				//printf("%f - ", CurrentObjectPos.fY);
+				//printf("%f", CurrentObjectPos.fZ);
+
+				Vector2 FeetSP;
+				Vector2 HeadSP;
+
+				CVector PlayerFeetPos = CurrentObjectPos - CVector(0.f, 0.f, 1.f);
+				CVector PlayerHeadPos = CurrentObjectPos + CVector(0.f, 0.f, 0.775f);
+
+				Vector2 screen;
+
+				if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
 				{
-					Vector2 FeetSP;
-					Vector2 HeadSP;
+					float BoxSY = FeetSP.y - HeadSP.y;
+					float BoxSX = BoxSY / 2.25f;
+					float BoxX = HeadSP.x - BoxSX / 2;
+					float BoxY = HeadSP.y;
 
-					CVector PlayerFeetPos = CurrentObjectPos - CVector(0.f, 0.f, 1.f);
-					CVector PlayerHeadPos = CurrentObjectPos + CVector(0.f, 0.f, 0.775f);
-
-					Vector2 screen;
-
-					if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
-					{
-						float BoxSY = FeetSP.y - HeadSP.y;
-						float BoxSX = BoxSY / 2.25f;
-						float BoxX = HeadSP.x - BoxSX / 2;
-						float BoxY = HeadSP.y;
-
-						draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
-						draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 0, 255, 0);
-					}
+					draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
+					draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 0, 255, 0);
 				}
 			}
 		}
@@ -279,6 +340,26 @@ int main()
 						draw::box(screen.x - size / 2 - 1, screen.y - 1, size + 2, size + 2, 3, 0, 0, 0);
 						draw::box(screen.x - size / 2, screen.y, size, size, 1, 0, 255, 0);
 					}
+				}
+			}
+		}
+
+		if (globals::cTest)
+		{
+			for (int i = 0; i < 1; i++)
+			{
+				CVector currentBonePos = Read<CVector>(0x19ABE734 + (0x54 * i));
+
+				if (!IsPositionValid(currentBonePos))
+					continue;
+
+				Vector2 screen;
+				int size = 4;
+
+				if (WorldToScreen(currentBonePos, screen))
+				{
+					draw::box(screen.x - size / 2 - 1, screen.y - 1, size + 2, size + 2, 3, 0, 0, 0);
+					draw::box(screen.x - size / 2, screen.y, size, size, 1, 0, 255, 0);
 				}
 			}
 		}

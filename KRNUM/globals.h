@@ -3,11 +3,13 @@
 
 namespace globals
 {
-	inline std::uint32_t process_id = 0;
+	inline std::uint32_t gtasa_process_id = 0;
+	inline std::uint32_t mta_process_id = 0;
 
-	inline bool cEspBoxes = true;
+	inline bool cEspBoxes = false;
 	inline bool cEspObjects = false;
 	inline bool cEspVehicles = false;
+	inline bool cTest = false;
 }
 
 namespace offsets

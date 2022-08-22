@@ -3,3 +3,4 @@
 
 bool IsPositionValid(CVector);
 bool IsVehicleIdValid(int);
+bool IsObjectValid(int);
