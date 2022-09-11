@@ -66,6 +66,22 @@ static ULONG64 get_module_base_address(uintptr_t pid, const char* module_name)
 	return base;
 }
 
+static ULONG64 get_module_base_address_x86(uintptr_t pid, const char* module_name)
+{
+	NULL_MEMORY instructions = { 0 };
+	instructions.pid = pid;
+	instructions.req_base_x86 = TRUE;
+	instructions.read = FALSE;
+	instructions.write = FALSE;
+	instructions.draw_box = FALSE;
+	instructions.module_name = module_name;
+	call_hook(&instructions);
+
+	ULONG64 base = NULL;
+	base = instructions.base_address;
+	return base;
+}
+
 HANDLE  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
 int main()
@@ -91,46 +107,78 @@ int main()
 88       88  88  8P'     `Y8         "8"      88  888    "Y8888P"     
 )" << std::endl;
 	SetConsoleTextAttribute(hConsole, 7);
-	std::cout << "Trying to locate process..." << std::endl;
+	std::cout << "Trying to locate processes... " << std::endl;
 	globals::gtasa_process_id = get_process_id("gta_sa.exe");
-	//globals::mta_process_id = get_process_id("Multi Theft Auto.exe");
+	globals::mta_process_id = get_process_id("Multi Theft Auto.exe");
+
+	std::cout << globals::gtasa_process_id << std::endl;
+	std::cout << globals::mta_process_id << std::endl;
+
+	std::cout << "gta_sa.exe: ";
 
 	if (globals::gtasa_process_id == 0) {
 		SetConsoleTextAttribute(hConsole, 4);
-		std::cout << "\nERROR: gta_sa.exe not found!" << std::endl;
+		std::cout << "NOT FOUND" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
+	else
+	{
+		SetConsoleTextAttribute(hConsole, 2);
+		std::cout << "SUCCESS" << std::endl;
+	}
 
-	//if (globals::mta_process_id == 0) {
-	//	SetConsoleTextAttribute(hConsole, 4);
-	//	std::cout << "\nERROR: MultiTheftAuto.exe not found!" << std::endl;
-	//	Sleep(5000);
-	//	return NULL;
-	//}
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << "Multi Theft Auto.exe: ";
 
-	std::cout << "Trying to locate base module..." << std::endl;
+	if (globals::mta_process_id == 0) {
+		SetConsoleTextAttribute(hConsole, 4);
+		std::cout << "NOT FOUND" << std::endl;
+		Sleep(5000);
+		return NULL;
+	}
+	else
+	{
+		SetConsoleTextAttribute(hConsole, 2);
+		std::cout << "SUCCESS" << std::endl;
+	}
+
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << "\nTrying to locate base modules... " << std::endl;
 	game_base_address = get_module_base_address(globals::gtasa_process_id, "gta_sa.exe");
+	client_module_address = get_module_base_address(globals::mta_process_id, "Multi Theft Auto.exe");
+
+	std::cout << "gta_sa.exe: ";
 
 	if (!game_base_address) {
 		SetConsoleTextAttribute(hConsole, 4);
-		std::cout << "\nERROR: Base module not found!" << std::endl;
+		std::cout << "NOT FOUND" << std::endl;
 		Sleep(5000);
 		return NULL;
 	}
+	else
+	{
+		SetConsoleTextAttribute(hConsole, 2);
+		std::cout << "SUCCESS" << std::endl;
+	}
 
-	//std::cout << "Trying to locate client module..." << std::endl;
-	//client_module_address = get_module_base_address(globals::mta_process_id, "client.dll");
-	//
-	//if (!client_module_address) {
-	//	SetConsoleTextAttribute(hConsole, 4);
-	//	std::cout << "\nERROR: Client module not found!" << std::endl;
-	//	Sleep(5000);
-	//	return NULL;
-	//}
+	SetConsoleTextAttribute(hConsole, 7);
+	std::cout << "client.dll: ";
+	
+	if (!client_module_address) {
+		SetConsoleTextAttribute(hConsole, 4);
+		std::cout << "NOT FOUND" << std::endl;
+		Sleep(5000);
+		return NULL;
+	}
+	else
+	{
+		SetConsoleTextAttribute(hConsole, 2);
+		std::cout << "SUCCESS" << std::endl;
+	}
 
 	SetConsoleTextAttribute(hConsole, 2);
-	std::cout << "Starting in 3s...\n\n" << std::endl;
+	std::cout << "\nStarting in 3s...\n\n" << std::endl;
 	SetConsoleTextAttribute(hConsole, 7);
 	Sleep(3000);
 

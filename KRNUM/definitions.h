@@ -29,6 +29,7 @@ typedef struct _NULL_MEMORY
 	BOOLEAN write;
 	BOOLEAN read;
 	BOOLEAN req_base;
+	BOOLEAN req_base_x86;
 	BOOLEAN draw_box;
 	int r, g, b, x, y, w, h, t;
 	void* output;
