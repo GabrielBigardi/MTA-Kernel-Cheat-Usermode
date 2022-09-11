@@ -146,7 +146,7 @@ int main()
 	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "\nTrying to locate base modules... " << std::endl;
 	game_base_address = get_module_base_address(globals::gtasa_process_id, "gta_sa.exe");
-	client_module_address = get_module_base_address(globals::mta_process_id, "Multi Theft Auto.exe");
+	client_module_address = get_module_base_address_x86(globals::mta_process_id, "core.dll");
 
 	std::cout << "gta_sa.exe: ";
 
