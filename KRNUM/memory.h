@@ -12,7 +12,7 @@ T Read(UINT_PTR read_address)
 {
 	T response{};
 	NULL_MEMORY instructions;
-	instructions.pid = globals::gtasa_process_id;
+	instructions.pid = globals::csgo_process_id;
 	instructions.size = sizeof(T);
 	instructions.address = read_address;
 	instructions.read = TRUE;

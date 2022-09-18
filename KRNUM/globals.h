@@ -3,21 +3,19 @@
 
 namespace globals
 {
-	inline std::uint32_t gtasa_process_id = 0;
-	inline std::uint32_t mta_process_id = 0;
-
+	inline std::uint32_t csgo_process_id = 0;
+	inline uintptr_t game_base_address = 0;
+	inline uintptr_t client_module_address = 0;
 	inline bool cEspBoxes = false;
-	inline bool cEspObjects = false;
-	inline bool cEspVehicles = false;
-	inline bool cTest = false;
 }
 
 namespace offsets
 {
-	inline DWORD_PTR dwPlayerPointer = 0xB6F5F0;
-	inline DWORD_PTR dwEntityList = 0xB7CD98;
-	inline DWORD_PTR dwCPedSize = 0x7C4;
-
-	inline DWORD_PTR m_CurrentHealth = 0x540;
-	inline DWORD_PTR m_MaxHealth = 0x544;
+	inline DWORD_PTR dwEntityList = 0x4DDD91C;
+	inline DWORD_PTR dwViewMatrix = 0x4DCF234;
+	inline DWORD_PTR dwLocalPlayer = 0xDC14CC;
+	inline DWORD_PTR m_bDormant = 0xED;
+	inline DWORD_PTR m_iHealth = 0x100;
+	inline DWORD_PTR m_vecOrigin = 0x138;
+	inline DWORD_PTR m_iTeamNum = 0xF4;
 }

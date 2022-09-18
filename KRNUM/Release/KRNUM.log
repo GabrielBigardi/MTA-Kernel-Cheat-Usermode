@@ -1,0 +1,105 @@
+﻿  gtautils.cpp
+  hook.cpp
+  main.cpp
+  The contents of <string_view> are available only with C++17 or later.
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(6,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(7,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(9,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(10,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(11,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(12,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(17,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(18,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(19,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(21,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(22,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,14): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,49): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(33,42): error C2039: ' string_view': não é um membro de 'std'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\vector(24): message : consulte a declaração de 'std'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(33,54): error C2065: 'string_view': identificador não declarado
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(33,54): error C2146: erro de sintaxe: ')' ausente antes do identificador 'process_name'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(34,1): error C2143: erro de sintaxe: ';' ausente antes de '{'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(34,1): error C2447: '{': faltando cabeçalho de função (lista formal de estilo antigo?)
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(111,30): error C2064: o termo não pode ser avaliado como uma função recebendo 1 argumentos
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(146,45): warning C4244: '=': conversão de 'ULONG64' para 'uintptr_t', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(147,53): warning C4244: '=': conversão de 'ULONG64' para 'uintptr_t', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(308,76): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(308,65): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(308,54): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(308,40): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(309,58): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(309,51): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(309,47): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(309,28): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(313,76): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(313,65): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(313,54): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(313,40): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(314,58): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(314,51): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(314,47): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(314,28): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(360,73): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(360,62): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(360,51): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(360,37): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(361,55): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(361,48): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(361,44): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(361,25): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(386,51): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(386,37): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(387,44): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(387,26): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(407,50): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(407,36): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(408,43): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\main.cpp(408,25): warning C4244: 'argumento': conversão de 'float' para 'int', possível perda de dados
+  math.cpp
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,14): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,49): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(6,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(7,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(9,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(10,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(11,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(12,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(17,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(18,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(19,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(21,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(22,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\math.cpp(41,13): warning C4244: 'return': conversão de 'double' para 'float', possível perda de dados
+  memory.cpp
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,14): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(11,13): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): error C2664: 'HMODULE LoadLibraryW(LPCWSTR)': não é possível converter um argumento 1 de 'const char [11]' em 'LPCWSTR'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,49): message : Tipos apontados não são relacionados; conversão requer reinterpret_cast, conversão C-style ou conversão function-style entre parênteses
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\libloaderapi.h(601,1): message : consulte a declaração de 'LoadLibraryW'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\hook.h(12,48): message : 'LoadLibraryW': a declaração de função deve estar disponível, pois nenhum dos argumentos depende de um parâmetro de modelo
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(6,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(7,23): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(9,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(10,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(11,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(12,14): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(17,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(18,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(19,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(21,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'
+C:\Users\gabri\Desktop\Cheat\KRNUM\KRNUM\globals.h(22,19): error C7525: variáveis embutidas exigem pelo menos '/std:c++17'

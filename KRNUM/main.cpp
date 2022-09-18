@@ -13,8 +13,7 @@
 #include "memory.h"
 #include "draw.h"
 
-uintptr_t game_base_address = 0;
-uintptr_t client_module_address = 0;
+
 
 struct HandleDisposer
 {
@@ -108,15 +107,11 @@ int main()
 )" << std::endl;
 	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "Trying to locate processes... " << std::endl;
-	globals::gtasa_process_id = get_process_id("gta_sa.exe");
-	globals::mta_process_id = get_process_id("Multi Theft Auto.exe");
+	globals::csgo_process_id = get_process_id("csgo.exe");
 
-	std::cout << globals::gtasa_process_id << std::endl;
-	std::cout << globals::mta_process_id << std::endl;
+	std::cout << "csgo.exe: ";
 
-	std::cout << "gta_sa.exe: ";
-
-	if (globals::gtasa_process_id == 0) {
+	if (globals::csgo_process_id == 0) {
 		SetConsoleTextAttribute(hConsole, 4);
 		std::cout << "NOT FOUND" << std::endl;
 		Sleep(5000);
@@ -125,32 +120,17 @@ int main()
 	else
 	{
 		SetConsoleTextAttribute(hConsole, 2);
-		std::cout << "SUCCESS" << std::endl;
-	}
-
-	SetConsoleTextAttribute(hConsole, 7);
-	std::cout << "Multi Theft Auto.exe: ";
-
-	if (globals::mta_process_id == 0) {
-		SetConsoleTextAttribute(hConsole, 4);
-		std::cout << "NOT FOUND" << std::endl;
-		Sleep(5000);
-		return NULL;
-	}
-	else
-	{
-		SetConsoleTextAttribute(hConsole, 2);
-		std::cout << "SUCCESS" << std::endl;
+		std::cout << "SUCCESS (" << globals::csgo_process_id << ")" << std::endl;
 	}
 
 	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "\nTrying to locate base modules... " << std::endl;
-	game_base_address = get_module_base_address(globals::gtasa_process_id, "gta_sa.exe");
-	client_module_address = get_module_base_address_x86(globals::mta_process_id, "core.dll");
+	globals::client_module_address = get_module_base_address_x86(globals::csgo_process_id, "client.dll");
+	globals::game_base_address = get_module_base_address(globals::csgo_process_id, "csgo.exe");
 
-	std::cout << "gta_sa.exe: ";
+	std::cout << "csgo.exe: ";
 
-	if (!game_base_address) {
+	if (!globals::game_base_address) {
 		SetConsoleTextAttribute(hConsole, 4);
 		std::cout << "NOT FOUND" << std::endl;
 		Sleep(5000);
@@ -159,13 +139,13 @@ int main()
 	else
 	{
 		SetConsoleTextAttribute(hConsole, 2);
-		std::cout << "SUCCESS" << std::endl;
+		std::cout << "SUCCESS: (0x" << std::hex << globals::game_base_address << std::dec << ")" << std::endl;
 	}
 
 	SetConsoleTextAttribute(hConsole, 7);
 	std::cout << "client.dll: ";
 	
-	if (!client_module_address) {
+	if (!globals::client_module_address) {
 		SetConsoleTextAttribute(hConsole, 4);
 		std::cout << "NOT FOUND" << std::endl;
 		Sleep(5000);
@@ -174,7 +154,7 @@ int main()
 	else
 	{
 		SetConsoleTextAttribute(hConsole, 2);
-		std::cout << "SUCCESS" << std::endl;
+		std::cout << "SUCCESS: (0x" << std::hex << globals::client_module_address << std::dec << ")" << std::endl;
 	}
 
 	SetConsoleTextAttribute(hConsole, 2);
@@ -183,11 +163,6 @@ int main()
 	Sleep(3000);
 
 	bool F2 = false;
-	bool F3 = false;
-	bool F4 = false;
-	bool F5 = false;
-	bool F6 = false;
-	bool F7 = false;
 
 	while (true)
 	{
@@ -212,202 +187,44 @@ int main()
 		}
 		if (GetAsyncKeyState(VK_F2) == 0 && F2 == true) F2 = false;
 
-		// ==== Vehicle ESP ====
-		if (GetAsyncKeyState(VK_F4) < 0 && F4 == false)
-		{
-			globals::cEspVehicles = !globals::cEspVehicles;
-
-			std::cout << "Vehicle ESP: ";
-			if (globals::cEspVehicles) {
-				SetConsoleTextAttribute(hConsole, 2);
-				std::cout << "[ON]" << std::endl;
-			}
-			else {
-				SetConsoleTextAttribute(hConsole, 4);
-				std::cout << "[OFF]" << std::endl;
-			}
-			SetConsoleTextAttribute(hConsole, 7);
-
-			F4 = true;
-		}
-		if (GetAsyncKeyState(VK_F4) == 0 && F4 == true) F4 = false;
-
-		// ==== Farclip Distance ====
-		if (GetAsyncKeyState(VK_F5) < 0 && F5 == false)
-		{
-			std::cout << "Farclip: ";
-			SetConsoleTextAttribute(hConsole, 2);
-			std::cout << "[1500f]" << std::endl;
-			SetConsoleTextAttribute(hConsole, 7);
-			Write(0xB7C4F0, 1500.0f);
-			F5 = true;
-		}
-		if (GetAsyncKeyState(VK_F5) == 0 && F5 == true) F5 = false;
-
-		// ==== FOG Distance ====
-		if (GetAsyncKeyState(VK_F6) < 0 && F6 == false)
-		{
-			std::cout << "FOG: ";
-			SetConsoleTextAttribute(hConsole, 2);
-			std::cout << "[500f]" << std::endl;
-			SetConsoleTextAttribute(hConsole, 7);
-			Write(0xB7C4F4, 500.0f);
-			F6 = true;
-		}
-		if (GetAsyncKeyState(VK_F6) == 0 && F6 == true) F6 = false;
-
-		// ==== Test ====
-		if (GetAsyncKeyState(VK_F7) < 0 && F7 == false)
-		{
-			globals::cTest = !globals::cTest;
-
-			F7 = true;
-		}
-		if (GetAsyncKeyState(VK_F7) == 0 && F7 == true) F7 = false;
-
 
 		if (globals::cEspBoxes)
 		{
-			DWORD_PTR LocalPlayer = Read<DWORD_PTR>(offsets::dwPlayerPointer);
-			DWORD_PTR EntityList = Read<DWORD_PTR>(offsets::dwEntityList);
+			DWORD LocalPlayerPointer = Read<DWORD>(globals::client_module_address + offsets::dwLocalPlayer);
+			view_matrix_t ViewMatrix = Read<view_matrix_t>(globals::client_module_address + offsets::dwViewMatrix);
 
-			DWORD_PTR pPosStructAddress = (DWORD)LocalPlayer + 0x14;
-			DWORD pPosStruct = Read<DWORD>(pPosStructAddress);
-			CVector pPlayerPos = Read<CVector>(pPosStruct + 0x30);
-
-			for (int i = 0; i < 140; i++)
+			// check if player is valid
+			if (LocalPlayerPointer != 0)
 			{
-				DWORD_PTR CurrentPed = (DWORD)EntityList + (offsets::dwCPedSize * i);
-				float CurrentPedHealth = Read<float>(CurrentPed + offsets::m_CurrentHealth);
+				int LocalPlayerHealth = Read<int>(LocalPlayerPointer + offsets::m_iHealth);
+				int LocalPlayerTeam = Read<int>(LocalPlayerPointer + offsets::m_iTeamNum);
 
-				if (CurrentPedHealth >= 1.0f && CurrentPed != LocalPlayer)
+				for (int i = 0; i < 32; i++)
 				{
-					DWORD_PTR PosStructAddress = (DWORD)CurrentPed + 0x14;
-					DWORD PosStruct = Read<DWORD>(PosStructAddress);
-					CVector PlayerPos = Read<CVector>(PosStruct + 0x30);
-					byte PlayerCheckByte = Read<byte>(CurrentPed + 0x530);
-					int PlayerStatus = (int)PlayerCheckByte;
+					DWORD EntityPointer = Read<DWORD>(globals::client_module_address + offsets::dwEntityList + i * 0x10);
+					int EntityDormant = Read<int>(EntityPointer + offsets::m_bDormant);
+					int EntityHealth = Read<int>(EntityPointer + offsets::m_iHealth);
+					int EntityTeam = Read<int>(EntityPointer + offsets::m_iTeamNum);
 
-					if (PlayerPos.fX != 0.0f && PlayerPos.fX != 0.0f)
+					if (EntityHealth == 0 || EntityDormant != 0 || EntityTeam == LocalPlayerTeam || EntityPointer == LocalPlayerPointer)
+						continue;
+
+					CVector EntityPos = Read<CVector>(EntityPointer + offsets::m_vecOrigin);
+					CVector EntityHead;
+					EntityHead.fX = EntityPos.fX;
+					EntityHead.fY = EntityPos.fY;
+					EntityHead.fZ = EntityPos.fZ + 65.f;
+					CVector ScreenPos;
+					CVector ScreenHead;
+
+
+
+					if (W2SCSGO(ViewMatrix, EntityPos, ScreenPos) && W2SCSGO(ViewMatrix, EntityHead, ScreenHead))
 					{
-						Vector2 FeetSP;
-						Vector2 HeadSP;
-
-						CVector PlayerFeetPos = PlayerPos - CVector(0.f, 0.f, 1.f);
-						CVector PlayerHeadPos = PlayerPos + CVector(0.f, 0.f, 0.775f);
-
-						Vector2 screen;
-
-						if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
-						{
-							float BoxSY = FeetSP.y - HeadSP.y;
-							float BoxSX = BoxSY / 2.25f;
-							float BoxX = HeadSP.x - BoxSX / 2;
-							float BoxY = HeadSP.y;
-
-							if (PlayerStatus == 50) // 0 = leaving a car, falling down from a bike or something like this 1 = normal case 50 = driving 55 = wasted 63 = busted
-							{
-								draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 175, 0, 0);
-								draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
-							}
-							else
-							{
-								draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
-								draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 255, 255, 255);
-							}
-							
-						}
+						float height = ScreenPos.fY - ScreenHead.fY;
+						float width = height / 2.4f;
+						draw::box(ScreenHead.fX - (width / 2), ScreenHead.fY, width, height, 2, 255, 0, 0);
 					}
-				}
-			}
-			//globals::cEspBoxes = false;
-		}
-
-		if (globals::cEspObjects)
-		{
-			DWORD_PTR ObjectPool = Read<DWORD_PTR>(0xB7449C);
-			DWORD_PTR ObjectPoolStart = Read<DWORD_PTR>((DWORD)ObjectPool);
-			int ObjectPoolSize = Read<int>((DWORD)ObjectPool + 0x8);
-
-			for (int i = 0; i < ObjectPoolSize; i++)
-			{
-				DWORD_PTR CurrentObject = (DWORD)ObjectPoolStart + (0x19c * i);
-				CVector CurrentObjectPos = Read<CVector>((DWORD)CurrentObject + 0x4);
-				int CurrentObjectModel = Read<int>((DWORD)CurrentObject + 0x22);
-
-				if (!IsPositionValid(CurrentObjectPos) || !IsObjectValid(CurrentObjectModel))
-					continue;
-
-				//printf("\n Object %i -> ", i);
-				//printf("%i - ", CurrentObjectModel);
-				//printf("%f - ", CurrentObjectPos.fX);
-				//printf("%f - ", CurrentObjectPos.fY);
-				//printf("%f", CurrentObjectPos.fZ);
-
-				Vector2 FeetSP;
-				Vector2 HeadSP;
-
-				CVector PlayerFeetPos = CurrentObjectPos - CVector(0.f, 0.f, 1.f);
-				CVector PlayerHeadPos = CurrentObjectPos + CVector(0.f, 0.f, 0.775f);
-
-				Vector2 screen;
-
-				if (WorldToScreen(PlayerFeetPos, FeetSP) && WorldToScreen(PlayerHeadPos, HeadSP))
-				{
-					float BoxSY = FeetSP.y - HeadSP.y;
-					float BoxSX = BoxSY / 2.25f;
-					float BoxX = HeadSP.x - BoxSX / 2;
-					float BoxY = HeadSP.y;
-
-					draw::box(HeadSP.x - BoxSX / 2 - 1, HeadSP.y - 1, BoxSX + 2, BoxSY + 2, 3, 0, 0, 175);
-					draw::box(HeadSP.x - BoxSX / 2, HeadSP.y, BoxSX, BoxSY, 1, 0, 255, 0);
-				}
-			}
-		}
-
-
-		if (globals::cEspVehicles)
-		{
-			DWORD_PTR VehiclePoolUsage = Read<DWORD_PTR>(0xB74494);
-			DWORD_PTR VehiclePoolStart = Read<DWORD_PTR>((DWORD)VehiclePoolUsage);
-			int MaximumVehicle = Read<int>((DWORD)VehiclePoolUsage + 0x8);
-
-			for (int i = 0; i < MaximumVehicle; i++)
-			{
-				DWORD_PTR CurrentVehicle = (DWORD)VehiclePoolStart + (0xA18 * i);
-				DWORD_PTR CurrentVehiclePosPointer = Read<DWORD_PTR>((DWORD)CurrentVehicle + 0x14);
-				CVector CurrentVehiclePos = Read<CVector>((DWORD)CurrentVehiclePosPointer + 0x30);
-			
-				if (CurrentVehiclePos.fX != 0.0f && CurrentVehiclePos.fY != 0.0f)// && CurrentObjectModel == 3243)
-				{
-					Vector2 screen;
-					int size = 4;
-				
-					if (WorldToScreen(CurrentVehiclePos, screen))
-					{
-						draw::box(screen.x - size / 2 - 1, screen.y - 1, size + 2, size + 2, 3, 0, 0, 0);
-						draw::box(screen.x - size / 2, screen.y, size, size, 1, 0, 255, 0);
-					}
-				}
-			}
-		}
-
-		if (globals::cTest)
-		{
-			for (int i = 0; i < 1; i++)
-			{
-				CVector currentBonePos = Read<CVector>(0x19ABE734 + (0x54 * i));
-
-				if (!IsPositionValid(currentBonePos))
-					continue;
-
-				Vector2 screen;
-				int size = 4;
-
-				if (WorldToScreen(currentBonePos, screen))
-				{
-					draw::box(screen.x - size / 2 - 1, screen.y - 1, size + 2, size + 2, 3, 0, 0, 0);
-					draw::box(screen.x - size / 2, screen.y, size, size, 1, 0, 255, 0);
 				}
 			}
 		}
