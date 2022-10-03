@@ -11,8 +11,8 @@ namespace globals
 
 namespace offsets
 {
-	inline DWORD_PTR dwEntityList = 0x4DDD91C;
-	inline DWORD_PTR dwViewMatrix = 0x4DCF234;
+	inline DWORD_PTR dwEntityList = 0x4DDD93C;
+	inline DWORD_PTR dwViewMatrix = 0x4DCF254;
 	inline DWORD_PTR dwLocalPlayer = 0xDC14CC;
 	inline DWORD_PTR m_bDormant = 0xED;
 	inline DWORD_PTR m_iHealth = 0x100;
